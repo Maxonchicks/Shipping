@@ -49,12 +49,13 @@
             // 
             // listBox1
             // 
+            listBox1.Font=new Font("Consolas", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             listBox1.FormattingEnabled=true;
             listBox1.ItemHeight=20;
-            listBox1.Location=new Point(382, 64);
+            listBox1.Location=new Point(297, 64);
             listBox1.Margin=new Padding(3, 4, 3, 4);
             listBox1.Name="listBox1";
-            listBox1.Size=new Size(1517, 564);
+            listBox1.Size=new Size(1602, 544);
             listBox1.TabIndex=7;
             // 
             // radioButton1
@@ -107,7 +108,7 @@
             // 
             // button1
             // 
-            button1.Location=new Point(75, 220);
+            button1.Location=new Point(43, 221);
             button1.Margin=new Padding(3, 4, 3, 4);
             button1.Name="button1";
             button1.Size=new Size(207, 40);
@@ -267,4 +268,3 @@
         private ToolTip toolTip1;
     }
 }
-

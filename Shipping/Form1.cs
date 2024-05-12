@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -35,21 +35,21 @@ namespace Shipping
         {
 
         }
-        //метод, возвращающий список фамилии сотрудников из БД
+
         private List<String> Get_Info()
         {
             List<String> res = new List<String>();
             try
             {
-                cn.Open(); //установка соединения
+                cn.Open();//СѓСЃС‚Р°РЅРѕРІРєР° СЃРѕРµРґРёРЅРµРЅРёСЏ
                 NpgsqlCommand cmd = new NpgsqlCommand();
-                // установка связи между объектом отправки SQL-запросов и 
-                // соединением
+                // СѓСЃС‚Р°РЅРѕРІРєР° СЃРІСЏР·Рё РјРµР¶РґСѓ РѕР±СЉРµРєС‚РѕРј РѕС‚РїСЂР°РІРєРё SQL-Р·Р°РїСЂРѕСЃРѕРІ Рё 
+                // СЃРѕРµРґРёРЅРµРЅРёРµРј
                 cmd.Connection = cn;
                 String table_name = "ship";
                 DataString dataString;
                 dataString = get_ship_data;
-                //Ввод_параметров f2;
+                //Р’РІРѕРґ_РїР°СЂР°РјРµС‚СЂРѕРІ f2;
                 textBox1.ForeColor = Color.Gray;
                 textBox2.ForeColor = Color.Gray;
                 textBox3.ForeColor = Color.Gray;
@@ -130,7 +130,7 @@ namespace Shipping
             catch (NpgsqlException er)
             {
                 listBox1.Items.Clear();
-                listBox1.Items.Add("Не удается получить доступ к базе данных!");
+                listBox1.Items.Add("РќРµ СѓРґР°РµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ РґРѕСЃС‚СѓРї Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С….");
                 /*listBox1.Items.Add(er.ToString());*/
             }
             catch (Exception)
@@ -145,54 +145,62 @@ namespace Shipping
 
         private String get_ship_data(NpgsqlDataReader rd)
         {
-            return $"{rd.GetValue(rd.GetOrdinal("regnumber"))}" +
+            /*return $"{rd.GetValue(rd.GetOrdinal("regnumber"))}" +
                 $"\t{rd.GetValue(rd.GetOrdinal("Name")),15}" +
                 $"\t{rd.GetValue(rd.GetOrdinal("skipper")),30}" +
                 $"\t{rd.GetValue(rd.GetOrdinal("Type")),30}" +
                 $"\t{rd.GetValue(rd.GetOrdinal("capacity")),30}" +
                 $"\t{rd.GetValue(rd.GetOrdinal("Year")),30}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("dockyard")),30}";
+                $"\t{rd.GetValue(rd.GetOrdinal("dockyard")),30}";*/
+            string regNumber = rd.GetInt32(rd.GetOrdinal("regnumber")).ToString();
+            string name = rd.GetString(rd.GetOrdinal("namee"));
+            string skipper = rd.GetString(rd.GetOrdinal("skipper"));
+            string type = rd.GetString(rd.GetOrdinal("typee"));
+            string capacity = rd.GetInt32(rd.GetOrdinal("capacity")).ToString();
+            string year = rd.GetInt32(rd.GetOrdinal("yearr")).ToString();
+            string dockyard = rd.GetString(rd.GetOrdinal("dockyard"));
+
+            return string.Format("{0,-8} {1,-20} {2,-35} {3,-20} {4,-10} {5,-10} {6,-10}", regNumber, name, skipper, type, capacity, year, dockyard);
         }
 
 
 
         private String get_cargo_data(NpgsqlDataReader rd)
         {
-            return $"{rd.GetValue(rd.GetOrdinal("customvalue"))}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("regnumber")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("Departure Date")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("Arrive Date")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("origin")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("destination")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("Number")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("shipment")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("declarevalue")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("unit")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("insurevalue")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("innsender")),20}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("innconsignee")),20}";
+            string customValue = rd.GetInt32(rd.GetOrdinal("customvalue")).ToString();
+            string regNumber = rd.GetInt32(rd.GetOrdinal("regnumber")).ToString();
+            string departureDate = rd.GetDateTime(rd.GetOrdinal("Departure Date")).ToString();
+            string arriveDate = rd.GetDateTime(rd.GetOrdinal("Arrive Date")).ToString();
+            string origin = rd.GetString(rd.GetOrdinal("origin"));
+            string destination = rd.GetString(rd.GetOrdinal("destination"));
+            string number = rd.GetInt32(rd.GetOrdinal("Number")).ToString();
+            string shipment = rd.GetString(rd.GetOrdinal("shipment"));
+            string declarevalue = rd.GetInt32(rd.GetOrdinal("declarevalue")).ToString();
+            string unit = rd.GetString(rd.GetOrdinal("unit"));
+            string insurevalue = rd.GetInt64(rd.GetOrdinal("insurevalue")).ToString();
+            string innsender = rd.GetInt64(rd.GetOrdinal("innsender")).ToString();
+            string innconsignee = rd.GetInt64(rd.GetOrdinal("innconsignee")).ToString();
+
+            return string.Format("{0,-6} {1,-8} {2,-20} {3,-20} {4,-18} {5,-18} {6,-5} {7, -25} {8, -8} {9, -8} {10, -8} {11, -12} {12, -10}", customValue, regNumber, departureDate, arriveDate, origin, destination, number, shipment, declarevalue, unit, insurevalue, innsender, innconsignee);
         }
 
         private String get_senders_data(NpgsqlDataReader rd)
         {
-            return $"{rd.GetValue(rd.GetOrdinal("innsender"))}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("sender")),35}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("addresssender")),65}";
-            /*int innsenderWidth = 10; // Максимальная длина для innsender
-            int senderWidth = 60; // Максимальная длина для sender
-            int addresssenderWidth = 50; // Максимальная длина для addresssender
+            string innSender = rd.GetInt64(rd.GetOrdinal("innsender")).ToString();
+            string sender = rd.GetString(rd.GetOrdinal("sender"));
+            string addressSender = rd.GetString(rd.GetOrdinal("addresssender"));
 
-            return $"{rd.GetValue(rd.GetOrdinal("innsender")).ToString().PadRight(innsenderWidth)}\t" +
-                   $"{rd.GetValue(rd.GetOrdinal("sender")).ToString().PadRight(senderWidth)}\t" +
-                   $"{rd.GetValue(rd.GetOrdinal("addresssender")).ToString().PadRight(addresssenderWidth)}";*/
+            return string.Format("{0, -15} {1, -40} {2, -30}", innSender, sender, addressSender);
         }
 
         private String get_consignees_data(NpgsqlDataReader rd)
         {
-            return $"{rd.GetValue(rd.GetOrdinal("innconsignee"))}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("consignee")),10}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("bankconsignee")),40}" +
-                $"\t{rd.GetValue(rd.GetOrdinal("addressconsignee")),30}";
+            string innConsignee = rd.GetInt32(rd.GetOrdinal("innconsignee")).ToString();
+            string consignee = rd.GetString(rd.GetOrdinal("consignee"));
+            string bankConsignee = rd.GetString(rd.GetOrdinal("bankconsignee"));
+            string addressConsignee = rd.GetString(rd.GetOrdinal("addressconsignee"));
+
+            return string.Format("{0, -8} {1, -35} {2, -40} {3, -10}", innConsignee, consignee, bankConsignee, addressConsignee);
         }
 
         private void show_Click(object sender, EventArgs e)
@@ -223,14 +231,14 @@ namespace Shipping
                     args = textBox1.Text.Split('\\');
                     /*res.Add("RegNumber\\\\Name\\\\Skipper\\\\Type\\\\Capacity\\\\Year\\\\Dockyard");*/
                     cmd.CommandText =
-                        "INSERT INTO ship([regnumber], [Name], [skipper], [Type], [capacity], [Year], [dockyard]) " +
+                        "INSERT INTO ship(regnumber, namee, skipper, typee, capacity, yearr, dockyard) " +
                         "VALUES (@regnumber, @Name, @skipper, @Type, @capacity, @Year, @dockyard)";
-                    cmd.Parameters.AddWithValue("@regnumber", args[0]);
+                    cmd.Parameters.AddWithValue("@regnumber", decimal.Parse(args[0]));
                     cmd.Parameters.AddWithValue("@Name", args[1]);
                     cmd.Parameters.AddWithValue("@skipper", args[2]);
                     cmd.Parameters.AddWithValue("@Type", args[3]);
-                    cmd.Parameters.AddWithValue("@capacity", args[4]);
-                    cmd.Parameters.AddWithValue("@Year", args[5]);
+                    cmd.Parameters.AddWithValue("@capacity", decimal.Parse(args[4]));
+                    cmd.Parameters.AddWithValue("@Year", decimal.Parse(args[5]));
                     cmd.Parameters.AddWithValue("@dockyard", args[6]);
                 }
                 else if (radioButton2.Checked)
@@ -238,30 +246,30 @@ namespace Shipping
                     args = textBox1.Text.Split('\\');
                     /*res.Add("CustomValue\\\\RegNumber\\\\Departure Date(YYYY-MM-DD)\\\\Arrive Date(YYYY-MM-DD)\\\\Origin\\\\Destination\\\\Number\\\\Shipment\\\\DeclareValue\\\\Unit\\\\InsureValue\\\\INNsender\\\\INNconsignee");*/
                     cmd.CommandText =
-                        "INSERT INTO cargo([customvalue], [regnumber], [Departure Date], [Arrive Date], [origin], [destination], [Number], [shipment], [declarevalue], [unit], [insurevalue], [innsender], [innconsignee]) " +
-                        "VALUES (@customvalue, @regnumber, @Departure_Date, @Arrive_Date, @origin, @destination, @Number, @shipment, @unit, @insurevalue, @innsender, @innconsignee)";
-                    cmd.Parameters.AddWithValue("@customvalue", args[0]);
-                    cmd.Parameters.AddWithValue("@regnumber", args[1]);
-                    cmd.Parameters.AddWithValue("@Departure_Date", args[2]);
-                    cmd.Parameters.AddWithValue("@Arrive_Date", args[3]);
+                        "INSERT INTO cargo(customvalue, regnumber, \"Departure Date\", \"Arrive Date\", origin, destination, \"Number\", shipment, declarevalue, unit, insurevalue, innsender, innconsignee) " +
+                        "VALUES (@customvalue, @regnumber, @Departure_Date, @Arrive_Date, @origin, @destination, @Number, @shipment, @declarevalue, @unit, @insurevalue, @innsender, @innconsignee)";
+                    cmd.Parameters.AddWithValue("@customvalue", decimal.Parse(args[0]));
+                    cmd.Parameters.AddWithValue("@regnumber", decimal.Parse(args[1]));
+                    cmd.Parameters.AddWithValue("@Departure_Date", DateTime.Parse(args[2]));
+                    cmd.Parameters.AddWithValue("@Arrive_Date", DateTime.Parse(args[3]));
                     cmd.Parameters.AddWithValue("@origin", args[4]);
                     cmd.Parameters.AddWithValue("@destination", args[5]);
-                    cmd.Parameters.AddWithValue("@Number", args[6]);
+                    cmd.Parameters.AddWithValue("@Number", decimal.Parse(args[6]));
                     cmd.Parameters.AddWithValue("@shipment", args[7]);
-                    cmd.Parameters.AddWithValue("@declarevalue", args[8]);
+                    cmd.Parameters.AddWithValue("@declarevalue", decimal.Parse(args[8]));
                     cmd.Parameters.AddWithValue("@unit", args[9]);
-                    cmd.Parameters.AddWithValue("@insurevalue", args[10]);
-                    cmd.Parameters.AddWithValue("@innsender", args[11]);
-                    cmd.Parameters.AddWithValue("@innconsignee", args[12]);
+                    cmd.Parameters.AddWithValue("@insurevalue", decimal.Parse(args[10]));
+                    cmd.Parameters.AddWithValue("@innsender", decimal.Parse(args[11]));
+                    cmd.Parameters.AddWithValue("@innconsignee", decimal.Parse(args[12]));
                 }
                 else if (radioButton3.Checked)
                 {
                     args = textBox1.Text.Split('\\');
                     /* res.Add("INNsender\\\\Sender\\\\AddressSender");*/
                     cmd.CommandText =
-                        "INSERT INTO senders([innsender], [sender], addresssender) " +
+                        "INSERT INTO senders(innsender, sender, addresssender) " +
                         "VALUES (@innsender, @sender, @addresssender)";
-                    cmd.Parameters.AddWithValue("@innsender", args[0]);
+                    cmd.Parameters.AddWithValue("@innsender", decimal.Parse(args[0]));
                     cmd.Parameters.AddWithValue("@sender", args[1]);
                     cmd.Parameters.AddWithValue("@addresssender", args[2]);
                 }
@@ -272,17 +280,18 @@ namespace Shipping
                     cmd.CommandText =
                         "INSERT INTO consignees(innconsignee, consignee, bankconsignee, addressconsignee) " +
                         "VALUES (@innconsignee, @consignee, @bankconsignee, @addressconsignee)";
-                    cmd.Parameters.AddWithValue("@innconsignee", args[0]);
+                    cmd.Parameters.AddWithValue("@innconsignee", decimal.Parse(args[0]));
                     cmd.Parameters.AddWithValue("@consignee", args[1]);
                     cmd.Parameters.AddWithValue("@bankconsignee", args[2]);
                     cmd.Parameters.AddWithValue("@addressconsignee", args[3]);
                 }
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception exc)
             {
                 label2.BackColor = System.Drawing.Color.Red;
-                label2.Text = "Ошибка!!!";
+                /*label2.Text = "РћС€РёР±РєР°!!!";*/
+                label2.Text = exc.Message;
             }
             finally
             {
@@ -303,37 +312,68 @@ namespace Shipping
                 if (radioButton1.Checked)
                 {
                     args = textBox2.Text.Split('\\');
-                    cmd.CommandText = $"UPDATE ship " +
-                        $"SET Name = {args[1]}, skipper = {args[2]}, Type = {args[3]}, capacity = \"{args[4]}\", Year = \"{args[5]}\", dockyard = {args[6]} " +
-                        $"WHERE [regnumber] = {args[0]}";
+                    cmd.CommandText = "UPDATE ship " +
+                            "SET namee = @namee, skipper = @skipper, typee = @typee, capacity = @capacity, yearr = @yearr, dockyard = @dockyard " +
+                            "WHERE regnumber = @regnumber";
+
+                    cmd.Parameters.AddWithValue("@namee", args[1]);
+                    cmd.Parameters.AddWithValue("@skipper", args[2]);
+                    cmd.Parameters.AddWithValue("@typee", args[3]);
+                    cmd.Parameters.AddWithValue("@capacity", decimal.Parse(args[4]));
+                    cmd.Parameters.AddWithValue("@yearr", decimal.Parse(args[5]));
+                    cmd.Parameters.AddWithValue("@dockyard", args[6]);
+                    cmd.Parameters.AddWithValue("@regnumber", decimal.Parse(args[0]));
                 }
                 else if (radioButton2.Checked)
                 {
                     args = textBox2.Text.Split('\\');
-                    cmd.CommandText = $"UPDATE cargo " +
-                        $"SET regnumber = \"{args[1]}\", [Departure Date] = \"{args[2]}\", [Arrive Date] = \"{args[3]}\", origin = \"{args[4]}\", destination = \"{args[5]}\", Number = \"{args[6]}\", shipment = \"{args[7]}\", declarevalue = \"{args[8]}\", unit = \"{args[9]}\", insurevalue = \"{args[10]}\", innsender = \"{args[11]}\", innconsignee = \"{args[12]}\" " +
-                        $"WHERE customvalue = {args[0]}";
+                    cmd.CommandText = "UPDATE cargo " +
+                        "SET regnumber = @regnumber, \"Departure Date\" = @departureDate, \"Arrive Date\" = @arriveDate, origin = @origin, destination = @destination, \"Number\" = @number, shipment = @shipment, declarevalue = @declarevalue, unit = @unit, insurevalue = @insurevalue, innsender = @innsender, innconsignee = @innconsignee " +
+                        "WHERE customvalue = @customvalue";
+
+                    cmd.Parameters.AddWithValue("@regnumber", decimal.Parse(args[1]));
+                    cmd.Parameters.AddWithValue("@departureDate", DateTime.Parse(args[2]));
+                    cmd.Parameters.AddWithValue("@arriveDate", DateTime.Parse(args[3]));
+                    cmd.Parameters.AddWithValue("@origin", args[4]);
+                    cmd.Parameters.AddWithValue("@destination", args[5]);
+                    cmd.Parameters.AddWithValue("@number", decimal.Parse(args[6]));
+                    cmd.Parameters.AddWithValue("@shipment", args[7]);
+                    cmd.Parameters.AddWithValue("@declarevalue", decimal.Parse(args[8]));
+                    cmd.Parameters.AddWithValue("@unit", args[9]);
+                    cmd.Parameters.AddWithValue("@insurevalue", decimal.Parse(args[10]));
+                    cmd.Parameters.AddWithValue("@innsender", decimal.Parse(args[11]));
+                    cmd.Parameters.AddWithValue("@innconsignee", decimal.Parse(args[12]));
+                    cmd.Parameters.AddWithValue("@customvalue", decimal.Parse(args[0]));
                 }
                 else if (radioButton3.Checked)
                 {
                     args = textBox2.Text.Split('\\');
-                    cmd.CommandText = $"UPDATE senders " +
-                        $"SET sender = \"{args[1]}\", addresssender = \"{args[2]}\" " +
-                        $"WHERE innsender = {args[0]}";
+                    cmd.CommandText = "UPDATE senders " +
+                        "SET sender = @sender, addresssender = @addresssender " +
+                        "WHERE innsender = @innsender";
+                    cmd.Parameters.AddWithValue("@sender", args[1]);
+                    cmd.Parameters.AddWithValue("@addresssender", args[2]);
+                    cmd.Parameters.AddWithValue("@innsender", decimal.Parse(args[0]));
                 }
                 else if (radioButton4.Checked)
                 {
                     args = textBox2.Text.Split('\\');
-                    cmd.CommandText = $"UPDATE consignees " +
-                        $"SET consignee = \"{args[1]}\", bankconsignee = \"{args[2]}\", addressconsignee = \"{args[3]}\" " +
-                        $"WHERE innconsignee = {args[0]}";
+                    cmd.CommandText = "UPDATE consignees " +
+                            "SET consignee = @consignee, bankconsignee = @bankconsignee, addressconsignee = @addressconsignee " +
+                            "WHERE innconsignee = @innconsignee";
+
+                    cmd.Parameters.AddWithValue("@consignee", args[1]);
+                    cmd.Parameters.AddWithValue("@bankconsignee", args[2]);
+                    cmd.Parameters.AddWithValue("@addressconsignee", args[3]);
+                    cmd.Parameters.AddWithValue("@innconsignee", decimal.Parse(args[0]));
                 }
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 label3.BackColor = System.Drawing.Color.Red;
-                label3.Text = "Ошибка!!!";
+               /* label3.Text = "РћС€РёР±РєР°!!!";*/
+                label3.Text = ex.Message;
             }
             finally
             {
@@ -353,29 +393,29 @@ namespace Shipping
                 if (radioButton1.Checked)
                 {
                     args = textBox3.Text.Split('\\');
-                    cmd.CommandText = $"DELETE FROM ship WHERE [regnumber] = {args[0]}";
+                    cmd.CommandText = $"DELETE FROM ship WHERE regnumber = {args[0]}";
                 }
                 else if (radioButton2.Checked)
                 {
                     args = textBox3.Text.Split('\\');
-                    cmd.CommandText = $"DELETE FROM cargo WHERE [customvalue] = {args[0]}";
+                    cmd.CommandText = $"DELETE FROM cargo WHERE customvalue = {args[0]}";
                 }
                 else if (radioButton3.Checked)
                 {
                     args = textBox3.Text.Split('\\');
-                    cmd.CommandText = $"DELETE FROM sender WHERE [innsender] = {args[0]}";
+                    cmd.CommandText = $"DELETE FROM senders WHERE innsender = {args[0]}";
                 }
                 else if (radioButton4.Checked)
                 {
                     args = textBox3.Text.Split('\\');
-                    cmd.CommandText = $"DELETE FROM consignees WHERE [innconsignee] = {args[0]}";
+                    cmd.CommandText = $"DELETE FROM consignees WHERE innconsignee = {args[0]}";
                 }
                 cmd.ExecuteNonQuery();
             }
             catch (Exception)
             {
                 label4.BackColor = System.Drawing.Color.Red;
-                label4.Text = "Ошибка!!!";
+                label4.Text = "РћС€РёР±РєР°!!!";
             }
             finally
             {
